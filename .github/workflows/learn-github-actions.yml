@@ -1,0 +1,26 @@
+name: gcp-artifact-registry-example
+on: [push]
+
+jobs:
+  run-python-script:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+      
+    - name: Authenticate with GCP
+      run: |
+        echo '${{ secrets.GCP_GITHUB_SA }}' > /tmp/gcp_key.json
+        gcloud auth activate-service-account --key-file=/tmp/gcp_key.json
+        gcloud auth configure-docker
+        
+    - name: Pull Docker image from GCP Artifact Registry
+      run: docker pull us-east1-docker.pkg.dev/testingproject-395607/github-test/python-docker:b8b89d0d0d88-latest
+
+    - name: Run Python script
+      run: |
+        docker run us-east1-docker.pkg.dev/testingproject-395607/github-test/python-docker:b8b89d0d0d88-latest python -c "print('Hello, world!')"
