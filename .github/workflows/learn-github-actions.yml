@@ -1,5 +1,8 @@
 name: gcp-artifact-registry-example
-on: [push]
+on:
+  push:
+    branches:
+      - main
 
 jobs:
   run-python-script:
