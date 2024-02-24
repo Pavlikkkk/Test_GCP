@@ -24,4 +24,4 @@ jobs:
 
     - name: Run Python script
       run: |
-        docker run us-east1-docker.pkg.dev/testingproject-395607/github-test/python-docker:b8b89d0d0d88-latest python -c "print('Hello, world!')"
+        docker run us-east1-docker.pkg.dev/testingproject-395607/github-test/python-docker python -c "print('Hello, world!')"
