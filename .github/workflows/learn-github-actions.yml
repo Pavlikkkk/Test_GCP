@@ -17,6 +17,7 @@ jobs:
         echo '${{ secrets.GCP_GITHUB_SA }}' > /tmp/gcp_key.json
         gcloud auth activate-service-account --key-file=/tmp/gcp_key.json
         gcloud auth configure-docker
+        docker-credential-gcr configure-docker --registries=us-east1-docker.pkg.dev
         
     - name: Pull Docker image from GCP Artifact Registry
       run: docker pull us-east1-docker.pkg.dev/testingproject-395607/github-test/python-docker:latest
