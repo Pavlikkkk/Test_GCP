@@ -1,0 +1,26 @@
+name: CD for BigQuery
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Authenticate with GCP
+      run: |
+        echo '${{ secrets.GCP_GITHUB_SA }}' > /tmp/gcp_key.json
+        gcloud auth activate-service-account --key-file=/tmp/gcp_key.json
+        gcloud config set project testingproject-395607
+
+    - name: Check if merged into main
+      if: github.event.pull_request.merged == true
+      run: |
+        echo "Pull request merged into main branch. Deploying to BigQuery..."
